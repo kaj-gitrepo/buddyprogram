@@ -11,20 +11,25 @@ CREATE TABLE EMPLOYEE (
     modified_date TIMESTAMP,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE EMPLOYEE
+ADD COLUMN comments TEXT,
+ADD COLUMN modified_by VARCHAR(255),
+ADD COLUMN email VARCHAR(255) UNIQUE;
+
 CREATE TABLE SKILLSET (
     skillset_id SERIAL PRIMARY KEY,
     employee_id INT NOT NULL,
-    skill_name VARCHAR(100) NOT NULL,
-    self_rating VARCHAR(20),
-    assessment_result VARCHAR(100),
-    assessment_name VARCHAR(100),
-    assessment_type VARCHAR(50),
-    FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id) ON DELETE CASCADE,
-    UNIQUE (employee_id, skill_name) -- Ensures an employee can only have one record per skill
+    skill_name VARCHAR(255) NOT NULL,
+    self_rating INT DEFAULT 0 CHECK (self_rating >= 0 AND self_rating <= 10),
+    assessment_result VARCHAR(255),
+    assessment_name VARCHAR(255),
+    assessment_type VARCHAR(255),
+    FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id) ON DELETE CASCADE
 );
 CREATE TABLE buddy (
-    buddy_id SERIAL PRIMARY KEY,
-employee_id INT NOT NULL,
+    --buddy_id SERIAL PRIMARY KEY,
+    employee_id INT NOT NULL,
     buddy_tag VARCHAR(50) NOT NULL,
     buddy_emp_id INT NOT NULL,
     FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id) ON DELETE CASCADE,
